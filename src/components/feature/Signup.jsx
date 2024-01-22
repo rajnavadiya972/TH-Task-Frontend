@@ -23,7 +23,7 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
-  const [isUserCreated, setIsUserCreated] = useState(false);
+  const [isAlertShow, setIsAlertShow] = useState(false);
   const [userStatus, setUserStatus] = useState({
     status: "",
     message: "",
@@ -48,25 +48,63 @@ const Signup = () => {
     });
   };
 
+  const handleSetIsAlertShow = (status) => {
+    setIsAlertShow(() => {
+      return status;
+    });
+  };
+
+  const isError = () => {
+    const { firstname, lastname, email, password, confPassword } = error;
+    if (
+      firstname === "" &&
+      lastname === "" &&
+      email === "" &&
+      password === "" &&
+      confPassword === ""
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const isNull = () => {
+    const { firstname, lastname, email, password, confPassword } = data;
+    if (
+      firstname === "" ||
+      lastname === "" ||
+      email === "" ||
+      password === "" ||
+      confPassword === ""
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsUserCreated(() => {
-      return true;
-    });
-    setTimeout(() => {
-      setIsUserCreated(() => {
-        return false;
-      });
-    }, 3000);
-    const res = await signUp(data);
-    if (!res.error) {
-      handleSetUserStatus("success", res.message);
-
+    if (isNull()) {
+      handleSetIsAlertShow(true);
       setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    } else {
-      handleSetUserStatus("error", res.error);
+        handleSetIsAlertShow(false);
+      }, 3000);
+      handleSetUserStatus("error", "Please fill all the values!");
+    }
+    if (!isError() && !isNull()) {
+      handleSetIsAlertShow(true);
+      setTimeout(() => {
+        handleSetIsAlertShow(false);
+      }, 3000);
+      const res = await signUp(data);
+      if (!res.error) {
+        handleSetUserStatus("success", res.message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        handleSetUserStatus("error", res.error);
+      }
     }
   };
 
@@ -170,7 +208,7 @@ const Signup = () => {
           action="/user/signup"
           className="p-5 rounded-lg bg-blue-50"
         >
-          {isUserCreated && (
+          {isAlertShow && (
             <Alert
               variant="filled"
               className="mb-2 w-[20rem]"
