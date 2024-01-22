@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Input from "../common/Input";
 import ButtonComponent from "../common/ButtonComp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signUp } from "../../services/authService";
+import Alert from "@mui/material/Alert";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -19,6 +21,14 @@ const Signup = () => {
     confPassword: "",
   });
 
+  const navigate = useNavigate();
+
+  const [isUserCreated, setIsUserCreated] = useState(false);
+  const [userStatus, setUserStatus] = useState({
+    status: "",
+    message: "",
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((data) => {
@@ -27,6 +37,37 @@ const Signup = () => {
         [name]: value,
       };
     });
+  };
+
+  const handleSetUserStatus = (status, message) => {
+    setUserStatus(() => {
+      return {
+        status: status,
+        message: message,
+      };
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsUserCreated(() => {
+      return true;
+    });
+    setTimeout(() => {
+      setIsUserCreated(() => {
+        return false;
+      });
+    }, 3000);
+    const res = await signUp(data);
+    if (!res.error) {
+      handleSetUserStatus("success", res.message);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } else {
+      handleSetUserStatus("error", res.error);
+    }
   };
 
   const handleBlur = (e) => {
@@ -62,6 +103,8 @@ const Signup = () => {
           errorMsg = "Enter confirm password not match!";
         }
         break;
+      default:
+        errorMsg = "Error!";
     }
     setError((error) => {
       return {
@@ -121,12 +164,21 @@ const Signup = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-[100vh] bg-blue-100">
+      <div className="flex flex-col justify-center items-center h-[100vh] bg-blue-100">
         <form
           method="POST"
           action="/user/signup"
           className="p-5 rounded-lg bg-blue-50"
         >
+          {isUserCreated && (
+            <Alert
+              variant="filled"
+              className="mb-2 w-[20rem]"
+              severity={userStatus.status}
+            >
+              {userStatus.message}
+            </Alert>
+          )}
           <p className="justify-center flex text-lg text-blue-600 font-bold">
             SignUp
           </p>
@@ -160,7 +212,7 @@ const Signup = () => {
               );
             })}
             <div className="flex justify-start">
-              <ButtonComponent type="submit" onChange={handleChange}>
+              <ButtonComponent type="button" onClick={handleSubmit}>
                 Submit
               </ButtonComponent>
               <span className=" ml-2 flex my-auto text-sm">
