@@ -6,6 +6,8 @@ import { signUp } from "../../services/authService";
 import Alert from "@mui/material/Alert";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     firstname: "",
     lastname: "",
@@ -20,8 +22,6 @@ const Signup = () => {
     password: "",
     confPassword: "",
   });
-
-  const navigate = useNavigate();
 
   const [isAlertShow, setIsAlertShow] = useState(false);
   const [userStatus, setUserStatus] = useState({
