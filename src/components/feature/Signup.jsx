@@ -157,6 +157,7 @@ const Signup = () => {
       name: "firstname",
       type: "text",
       error: error.firstname === "" ? false : true,
+      helperText:error.firstname,
       label: "firstname",
       placeholder: "FirstName",
       value: data.firstname,
@@ -166,6 +167,7 @@ const Signup = () => {
       name: "lastname",
       type: "text",
       error: error.lastname === "" ? false : true,
+      helperText:error.lastname,
       label: "lastname",
       placeholder: "LastName",
       value: data.lastname,
@@ -175,6 +177,7 @@ const Signup = () => {
       name: "email",
       type: "email",
       error: error.email === "" ? false : true,
+      helperText:error.email,
       label: "email",
       placeholder: "example@gmail.com",
       value: data.email,
@@ -184,6 +187,7 @@ const Signup = () => {
       name: "password",
       type: "password",
       error: error.password === "" ? false : true,
+      helperText:error.password,
       label: "password",
       placeholder: "Password",
       value: data.password,
@@ -193,6 +197,7 @@ const Signup = () => {
       name: "confPassword",
       type: "password",
       error: error.confPassword === "" ? false : true,
+      helperText:error.confPassword,
       label: "Confirm Password",
       placeholder: "Confirm Password",
       value: data.confPassword,
@@ -230,10 +235,12 @@ const Signup = () => {
                 placeholder,
                 value,
                 errMessage,
+                helperText
               } = input;
               return (
                 <div key={index} className="flex flex-col">
                   <Input
+                    helperText={helperText}
                     type={type}
                     error={error}
                     onChange={handleChange}
@@ -243,9 +250,9 @@ const Signup = () => {
                     placeholder={placeholder}
                     value={value}
                   />
-                  {error && (
+                  {/* {error && (
                     <span className="text-xs text-red-700">{errMessage}</span>
-                  )}
+                  )} */}
                 </div>
               );
             })}

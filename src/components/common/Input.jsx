@@ -10,10 +10,12 @@ const Input = ({
   placeholder,
   value,
   onBlur,
+  helperText
 }) => {
   return (
     <>
       <TextField
+        helperText={helperText}
         error={error}
         id="outlined-password-input"
         name={name}
