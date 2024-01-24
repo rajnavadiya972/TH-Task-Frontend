@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import Input from "../../common/Input";
 import ButtonComponent from "../../common/ButtonComp";
-import { logIn } from "../../../services/authService";
+import { logIn } from "../../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
