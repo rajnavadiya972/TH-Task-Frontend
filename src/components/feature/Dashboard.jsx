@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState([]);
   const [isPostLoaded, setIsPostLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -31,6 +31,7 @@ const Dashboard = () => {
     fetchPostData(page, pageSize)
       .then((res) => {
         if (res.error) {
+          console.log(res.error);
           navigate("/login");
         } else {
           setIsPostLoaded(true);
