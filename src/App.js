@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./components/feature/login/index";
 import Signup from "./components/feature/signup/index";
 import Dashboard from "./components/feature/Dashboard";
+import UserPost from "./components/feature/UserPost";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/mypost" element={<UserPost />} />
         <Route path="/" element={<Signup />} />
       </Routes>
     </>

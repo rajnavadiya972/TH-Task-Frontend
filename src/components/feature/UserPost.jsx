@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import Header from "../common/Header";
-import { fetchPost } from "../../services/postApi";
+import { fetchUserPost } from "../../services/postApi";
 import Post from "../common/Post";
 import PaginationBar from "../common/PaginationBar";
 import Dropdown from "../common/Dropdown";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = () => {
-  const navigate = useNavigate();
+const UserPost = () => {
+    const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [isPostLoaded, setIsPostLoaded] = useState(false);
   const [page, setPage] = useState(1);
@@ -25,7 +25,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPostData = async (page, pageSize) => {
       setIsPostLoaded(false);
-      const res = await fetchPost({ page, pageSize });
+      const res = await fetchUserPost({ page, pageSize });
       if (res.error) {
         navigate("/login");
       } else {
@@ -37,11 +37,11 @@ const Dashboard = () => {
     fetchPostData(page, pageSize);
   }, [page, pageSize]);
 
-  return (
-    <>
-      {isPostLoaded ? (
+    return (
         <>
-          <Header isLoggedIn isDashboard />
+            {isPostLoaded ? (
+        <>
+          <Header isLoggedIn isUserPost />
           <div className="grid grid-cols-3 justify-items-center bg-indigo-100 mx-3 mt-3 rounded-[20px]">
             {posts.map((post, index) => {
               return <Post data={post} key={index} />;
@@ -66,8 +66,8 @@ const Dashboard = () => {
           Loading...
         </p>
       )}
-    </>
-  );
-};
+        </>
+    );
+}
 
-export default Dashboard;
+export default UserPost;
