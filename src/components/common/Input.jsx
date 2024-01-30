@@ -6,7 +6,6 @@ const Input = ({ error, label, type, onChange, name, placeholder, value, onBlur,
       <TextField
         helperText={helperText}
         error={error}
-        id="outlined-password-input"
         name={name}
         label={label}
         placeholder={placeholder}
