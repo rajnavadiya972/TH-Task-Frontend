@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER_URL = "http://localhost:8000/";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const signUp = async (body) => {
   try {
