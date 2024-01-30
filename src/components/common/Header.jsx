@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
 import profile from "../../assets/images/profile.jpg";
 import { logOutUser, fetchLoginUser } from "../../services/postApi";
 
@@ -7,6 +9,7 @@ const Header = ({ isLoggedIn, isDashboard, isUserPost }) => {
   const [userName, setUserName] = useState("USER");
   const [isLogedIn, setIsLogedIn] = useState(isLoggedIn);
   const handleLogout = () => {
+    toast.success("Logged out!")
     logOutUser();
     setIsLogedIn(false);
   };
@@ -16,9 +19,7 @@ const Header = ({ isLoggedIn, isDashboard, isUserPost }) => {
       const user = await fetchLoginUser();
       if (user) {
         setUserName(user.userName);
-        return;
       }
-      setUserName("USER NOT FOUND");
     };
     if (isLoggedIn) {
       fetchUserData();
@@ -29,7 +30,7 @@ const Header = ({ isLoggedIn, isDashboard, isUserPost }) => {
     <>
       <header className="rounded-[20px] mx-3 mt-3 bg-indigo-100">
         <ul>
-          {isLoggedIn ? (
+          {isLogedIn ? (
             <div className="flex auto-cols-max pr-5 justify-end p-5 content-center">
               {isDashboard ? (
                 <li className="justify-self-center mr-3">
@@ -98,6 +99,7 @@ const Header = ({ isLoggedIn, isDashboard, isUserPost }) => {
           )}
         </ul>
       </header>
+      <Toaster />
     </>
   );
 };

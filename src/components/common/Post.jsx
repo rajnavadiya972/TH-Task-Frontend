@@ -1,5 +1,6 @@
-import "../../assets/styles/components/Post.css";
 import Comment from "./Comment";
+
+import "../../assets/styles/components/Post.css";
 
 const Post = ({ data }) => {
   const {

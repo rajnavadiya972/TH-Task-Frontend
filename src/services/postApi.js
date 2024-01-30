@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const SERVER_URL = "http://localhost:8000/";
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const fetchPost = async (props) => {
   const token = Cookies.get("token");

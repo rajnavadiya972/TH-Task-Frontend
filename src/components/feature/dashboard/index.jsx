@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
-import Header from "../common/Header";
-import { fetchPost } from "../../services/postApi";
-import Post from "../common/Post";
-import PaginationBar from "../common/PaginationBar";
-import Dropdown from "../common/Dropdown";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Toaster } from 'react-hot-toast';
+
+import Header from "../../common/Header";
+import { fetchPost } from "../../../services/postApi";
+import Post from "../../common/Post";
+import PaginationBar from "../../common/PaginationBar";
+import Dropdown from "../../common/Dropdown";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [isPostLoaded, setIsPostLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -20,6 +23,7 @@ const Dashboard = () => {
 
   const handleSelectionChange = (event, value) => {
     setPageSize(event.target.value);
+    setPage(1);
   };
 
   useEffect(() => {
@@ -62,10 +66,11 @@ const Dashboard = () => {
           </div>
         </>
       ) : (
-        <p className="flex justify-center text-lg font-bold text-blue-800">
-          Loading...
-        </p>
+        <div className="flex justify-center">
+          <CircularProgress />
+        </div>
       )}
+      <Toaster />
     </>
   );
 };

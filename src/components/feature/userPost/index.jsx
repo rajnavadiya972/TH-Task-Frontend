@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import Header from "../common/Header";
-import { fetchUserPost } from "../../services/postApi";
-import Post from "../common/Post";
-import PaginationBar from "../common/PaginationBar";
-import Dropdown from "../common/Dropdown";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Toaster } from 'react-hot-toast';
+
+import Header from "../../common/Header";
+import { fetchUserPost } from "../../../services/postApi";
+import Post from "../../common/Post";
+import PaginationBar from "../../common/PaginationBar";
+import Dropdown from "../../common/Dropdown";
 
 const UserPost = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [isPostLoaded, setIsPostLoaded] = useState(false);
   const [page, setPage] = useState(1);
@@ -20,6 +23,7 @@ const UserPost = () => {
 
   const handleSelectionChange = (event, value) => {
     setPageSize(event.target.value);
+    setPage(1);
   };
 
   useEffect(() => {
@@ -37,9 +41,9 @@ const UserPost = () => {
     fetchPostData(page, pageSize);
   }, [page, pageSize]);
 
-    return (
-        <>
-            {isPostLoaded ? (
+  return (
+    <>
+      {isPostLoaded ? (
         <>
           <Header isLoggedIn isUserPost />
           <div className="grid grid-cols-3 justify-items-center bg-indigo-100 mx-3 mt-3 rounded-[20px]">
@@ -62,12 +66,13 @@ const UserPost = () => {
           </div>
         </>
       ) : (
-        <p className="flex justify-center text-lg font-bold text-blue-800">
-          Loading...
-        </p>
+        <div className="flex justify-center">
+          <CircularProgress />
+        </div>
       )}
-        </>
-    );
+      <Toaster />
+    </>
+  );
 }
 
 export default UserPost;
