@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Input from "../common/Input";
-import ButtonComponent from "../common/ButtonComp";
 import { Link, useNavigate } from "react-router-dom";
-import { signUp } from "../../services/authService";
-import Alert from "@mui/material/Alert";
+import toast, { Toaster } from 'react-hot-toast';
+
+import Input from "../../common/Input";
+import ButtonComponent from "../../common/ButtonComp";
+import { signUp } from "../../../services/authService";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -15,18 +16,13 @@ const Signup = () => {
     password: "",
     confPassword: "",
   });
+
   const [error, setError] = useState({
     firstname: "",
     lastname: "",
     email: "",
     password: "",
     confPassword: "",
-  });
-
-  const [isAlertShow, setIsAlertShow] = useState(false);
-  const [userStatus, setUserStatus] = useState({
-    status: "",
-    message: "",
   });
 
   const handleChange = (e) => {
@@ -36,21 +32,6 @@ const Signup = () => {
         ...data,
         [name]: value,
       };
-    });
-  };
-
-  const handleSetUserStatus = (status, message) => {
-    setUserStatus(() => {
-      return {
-        status: status,
-        message: message,
-      };
-    });
-  };
-
-  const handleSetIsAlertShow = (status) => {
-    setIsAlertShow(() => {
-      return status;
     });
   };
 
@@ -85,25 +66,15 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isNull()) {
-      handleSetIsAlertShow(true);
-      setTimeout(() => {
-        handleSetIsAlertShow(false);
-      }, 3000);
-      handleSetUserStatus("error", "Please fill all the values!");
+      toast.error("Please fill all the values!")
     }
     if (!isError() && !isNull()) {
-      handleSetIsAlertShow(true);
-      setTimeout(() => {
-        handleSetIsAlertShow(false);
-      }, 3000);
       const res = await signUp(data);
       if (!res.error) {
-        handleSetUserStatus("success", res.message);
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
+        toast.success(res.message)
+        navigate("/login");
       } else {
-        handleSetUserStatus("error", res.error);
+        toast.error(res.error)
       }
     }
   };
@@ -138,7 +109,7 @@ const Signup = () => {
         break;
       case "confPassword":
         if (data.password !== value) {
-          errorMsg = "Enter confirm password not match!";
+          errorMsg = "Entered confirm password not match!";
         }
         break;
       default:
@@ -157,51 +128,46 @@ const Signup = () => {
       name: "firstname",
       type: "text",
       error: error.firstname === "" ? false : true,
-      helperText:error.firstname,
+      helperText: error.firstname,
       label: "firstname",
       placeholder: "FirstName",
       value: data.firstname,
-      errMessage: error.firstname,
     },
     {
       name: "lastname",
       type: "text",
       error: error.lastname === "" ? false : true,
-      helperText:error.lastname,
+      helperText: error.lastname,
       label: "lastname",
       placeholder: "LastName",
       value: data.lastname,
-      errMessage: error.lastname,
     },
     {
       name: "email",
       type: "email",
       error: error.email === "" ? false : true,
-      helperText:error.email,
+      helperText: error.email,
       label: "email",
       placeholder: "example@gmail.com",
       value: data.email,
-      errMessage: error.email,
     },
     {
       name: "password",
       type: "password",
       error: error.password === "" ? false : true,
-      helperText:error.password,
+      helperText: error.password,
       label: "password",
       placeholder: "Password",
       value: data.password,
-      errMessage: error.password,
     },
     {
       name: "confPassword",
       type: "password",
       error: error.confPassword === "" ? false : true,
-      helperText:error.confPassword,
+      helperText: error.confPassword,
       label: "Confirm Password",
       placeholder: "Confirm Password",
       value: data.confPassword,
-      errMessage: error.confPassword,
     },
   ];
 
@@ -213,15 +179,6 @@ const Signup = () => {
           action="/user/signup"
           className="p-5 rounded-lg bg-blue-50"
         >
-          {isAlertShow && (
-            <Alert
-              variant="filled"
-              className="mb-2 w-[20rem]"
-              severity={userStatus.status}
-            >
-              {userStatus.message}
-            </Alert>
-          )}
           <p className="justify-center flex text-lg text-blue-600 font-bold">
             SignUp
           </p>
@@ -234,7 +191,6 @@ const Signup = () => {
                 label,
                 placeholder,
                 value,
-                errMessage,
                 helperText
               } = input;
               return (
@@ -250,9 +206,6 @@ const Signup = () => {
                     placeholder={placeholder}
                     value={value}
                   />
-                  {/* {error && (
-                    <span className="text-xs text-red-700">{errMessage}</span>
-                  )} */}
                 </div>
               );
             })}
@@ -269,6 +222,7 @@ const Signup = () => {
             </div>
           </div>
         </form>
+        <Toaster />
       </div>
     </>
   );

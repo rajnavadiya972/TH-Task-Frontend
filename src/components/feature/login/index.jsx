@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Input from "../common/Input";
-import ButtonComponent from "../common/ButtonComp";
 import { Link, useNavigate } from "react-router-dom";
-import { logIn } from "../../services/authService";
-import Alert from "@mui/material/Alert";
-import Cookies from "js-cookie";
+import toast, { Toaster } from 'react-hot-toast';
+
+import Input from "../../common/Input";
+import ButtonComponent from "../../common/ButtonComp";
+import { logIn } from "../../../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,27 +13,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-
-  const [isAlertShow, setIsAlertShow] = useState(false);
-  const [userStatus, setUserStatus] = useState({
-    status: "",
-    message: "",
-  });
-
-  const handleSetIsAlertShow = (status) => {
-    setIsAlertShow(() => {
-      return status;
-    });
-  };
-
-  const handleSetUserStatus = (status, message) => {
-    setUserStatus(() => {
-      return {
-        status: status,
-        message: message,
-      };
-    });
-  };
 
   const isNull = () => {
     const { email, password } = data;
@@ -56,30 +35,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isNull()) {
-      handleSetIsAlertShow(true);
-      setTimeout(() => {
-        handleSetIsAlertShow(false);
-      }, 1000);
       const res = await logIn(data);
       if (!res.error) {
-        const inOneHour = new Date(new Date().getTime() + 60 * 60 * 1000);
-        const expireToken = {
-          expires: inOneHour,
-        };
-        handleSetUserStatus("success", res.message);
-        Cookies.set("token", res.token, expireToken);
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
+        toast.success(res.message)
+        navigate("/dashboard");
+        // setTimeout(() => {
+        //   navigate("/dashboard");
+        // }, 1000);
       } else {
-        handleSetUserStatus("error", res.error);
+        toast.error(res.error)
       }
     } else {
-      handleSetIsAlertShow(true);
-      setTimeout(() => {
-        handleSetIsAlertShow(false);
-      }, 3000);
-      handleSetUserStatus("error", "Please fill all the values!");
+      toast.error("Please fill all the values!")
     }
   };
 
@@ -108,15 +75,6 @@ const Login = () => {
           action="/user/signin"
           className="p-5 rounded-lg bg-blue-50"
         >
-          {isAlertShow && (
-            <Alert
-              variant="filled"
-              className="mb-2 w-[20rem]"
-              severity={userStatus.status}
-            >
-              {userStatus.message}
-            </Alert>
-          )}
           <p className="justify-center flex text-lg text-blue-600 font-bold">
             LogIn
           </p>
@@ -149,6 +107,7 @@ const Login = () => {
             </div>
           </div>
         </form>
+        <Toaster />
       </div>
     </>
   );

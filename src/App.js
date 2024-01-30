@@ -1,7 +1,8 @@
-import "./App.css";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./components/feature/Login";
-import Signup from "./components/feature/Signup";
+
+import Login from "./components/feature/login/index";
+import Signup from "./components/feature/signup/index";
 
 function App() {
   return (

@@ -1,17 +1,6 @@
-import * as React from "react";
 import TextField from "@mui/material/TextField";
 
-const Input = ({
-  error,
-  label,
-  type,
-  onChange,
-  name,
-  placeholder,
-  value,
-  onBlur,
-  helperText
-}) => {
+const Input = ({ error, label, type, onChange, name, placeholder, value, onBlur, helperText }) => {
   return (
     <>
       <TextField

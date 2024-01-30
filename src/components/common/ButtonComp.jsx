@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "@mui/material/Button";
 
 const ButtonComponent = ({ children, type, onClick }) => {
@@ -10,4 +9,5 @@ const ButtonComponent = ({ children, type, onClick }) => {
     </>
   );
 };
+
 export default ButtonComponent;
