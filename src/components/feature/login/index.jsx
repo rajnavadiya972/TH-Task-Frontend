@@ -39,9 +39,6 @@ const Login = () => {
       if (!res.error) {
         toast.success(res.message)
         navigate("/dashboard");
-        // setTimeout(() => {
-        //   navigate("/dashboard");
-        // }, 1000);
       } else {
         toast.error(res.error)
       }
