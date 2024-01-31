@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
-import profile from "../../assets/images/profile.jpg";
-import { logOutUser, fetchLoginUser } from "../../services/postApi";
+import profile from "../assets/images/profile.jpg";
+import { logOutUser, fetchLoginUser } from "../services/postApi";
 
 const Header = ({ isLoggedIn, isDashboard, isUserPost }) => {
   const [userName, setUserName] = useState("USER");
@@ -17,10 +17,11 @@ const Header = ({ isLoggedIn, isDashboard, isUserPost }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       const user = await fetchLoginUser();
-      if (user) {
-        setUserName(user.userName);
+      if (user.data) {
+        setUserName(user.data.userName);
       }
     };
+
     if (isLoggedIn) {
       fetchUserData();
     }

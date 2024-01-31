@@ -3,26 +3,27 @@ import Cookies from "js-cookie";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const signUp = async (body) => {
+export const signUp = async (body) => {
+  const url = `${SERVER_URL}user/signup`;
   try {
-    const res = await axios.post(SERVER_URL + "user/signup", body);
-    return res.data;
+    const res = await axios.post(url, body);
+    return res;
   } catch (error) {
-    return error.response.data;
+    return error.response;
   }
 };
-const logIn = async (body) => {
+
+export const logIn = async (body) => {
+  const url = `${SERVER_URL}user/signin`;
   try {
-    const res = await axios.post(SERVER_URL + "user/signin", body);
+    const res = await axios.post(url, body);
     const oneHour = new Date(new Date().getTime() + 60 * 60 * 1000);
     const expireToken = {
       expires: oneHour,
     };
     Cookies.set("token", res.data.token, expireToken);
-    return res.data;
+    return res;
   } catch (error) {
-    return error.response.data;
+    return error.response;
   }
 };
-
-export { signUp, logIn };

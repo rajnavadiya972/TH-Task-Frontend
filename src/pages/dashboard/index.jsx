@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Toaster } from 'react-hot-toast';
 
-import Header from "../../common/Header";
-import { fetchPost } from "../../../services/postApi";
-import Post from "../../common/Post";
-import PaginationBar from "../../common/PaginationBar";
-import Dropdown from "../../common/Dropdown";
+import Header from "../../components/Header";
+import { fetchPost } from "../../services/postApi";
+import Post from "../../components/Post";
+import PaginationBar from "../../components/PaginationBar";
+import Dropdown from "../../components/Dropdown";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -29,13 +29,18 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPostData = async (page, pageSize) => {
       setIsPostLoaded(false);
-      const res = await fetchPost({ page, pageSize });
-      if (res.error) {
-        navigate("/login");
-      } else {
+      try {
+        const res = await fetchPost({ page, pageSize });
+        if (res.data.error || res.status !== 200) {
+          navigate("/login");
+          return;
+        }
         setIsPostLoaded(true);
-        setTotalPage(res.totalPages);
-        setPosts(res.data);
+        setTotalPage(res.data.totalPages);
+        setPosts(res.data.data);
+      } catch (error) {
+        navigate("/login");
+        return;
       }
     };
     fetchPostData(page, pageSize);
@@ -46,7 +51,8 @@ const Dashboard = () => {
       {isPostLoaded ? (
         <>
           <Header isLoggedIn isDashboard />
-          <div className="grid grid-cols-3 justify-items-center bg-indigo-100 mx-3 mt-3 rounded-[20px]">
+          <div className="bg-indigo-100 mx-3 mt-3 flex flex-col items-center rounded-[20px]">
+            <div className="text-blue-600 text-lg font-bold flex justify-center mt-3">All Post</div>
             {posts.map((post, index) => {
               return <Post data={post} key={index} />;
             })}
